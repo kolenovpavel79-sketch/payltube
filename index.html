@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PaylTube Ultra — Платформа нового поколения</title>
+    <title>PaylTube Pro Max</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
@@ -11,109 +11,106 @@
             --bg: #0f0f0f; --surface: #1e1e1e; --accent: #ff0000;
             --text: #ffffff; --text-gray: #aaaaaa; --border: #383838; --blue: #3ea6ff;
         }
-        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg); color: var(--text); overflow: hidden; }
         
-        /* HEADER */
+        /* Layout */
         header { position: fixed; top: 0; width: 100%; height: 56px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 1000; border-bottom: 1px solid var(--border); box-sizing: border-box; }
-        .logo { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; font-size: 18px; letter-spacing: -1px; }
+        nav { position: fixed; left: 0; top: 56px; width: 72px; bottom: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-right: 1px solid var(--border); }
+        main { margin-left: 72px; margin-top: 56px; height: calc(100vh - 56px); overflow-y: auto; padding: 20px; box-sizing: border-box; }
+
+        /* UI Elements */
+        .logo { display: flex; align-items: center; gap: 5px; cursor: pointer; font-weight: bold; font-size: 20px; }
         .logo i { color: var(--accent); font-size: 30px; }
-        .search-bar { flex: 0 1 500px; display: flex; background: #121212; border: 1px solid var(--border); border-radius: 20px; padding: 2px 15px; }
+        .search-bar { flex: 0 1 500px; display: flex; background: #121212; border: 1px solid var(--border); border-radius: 20px; padding: 2px 15px; align-items: center; }
         .search-bar input { width: 100%; background: none; border: none; color: white; padding: 8px; outline: none; }
-        .user-btn { background: none; border: 1px solid var(--blue); color: var(--blue); padding: 6px 15px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 5px; font-weight: 500; }
+        
+        .btn-login { background: none; border: 1px solid var(--blue); color: var(--blue); padding: 6px 12px; border-radius: 20px; cursor: pointer; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+        .nav-link { color: var(--text-gray); text-decoration: none; display: flex; flex-direction: column; align-items: center; margin-bottom: 25px; cursor: pointer; width: 100%; }
+        .nav-link.active { color: white; }
+        .nav-link span { font-size: 10px; margin-top: 4px; }
         .avatar { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; object-fit: cover; }
 
-        /* SIDEBAR */
-        nav { position: fixed; left: 0; top: 56px; width: 72px; bottom: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; padding-top: 15px; border-right: 1px solid var(--border); z-index: 999; }
-        .nav-link { color: var(--text-gray); text-decoration: none; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; cursor: pointer; transition: 0.2s; width: 100%; }
-        .nav-link:hover, .nav-link.active { color: white; }
-        .nav-link i { font-size: 24px; }
-        .nav-link span { font-size: 10px; margin-top: 5px; text-align: center; }
-
-        /* MAIN CONTENT */
-        main { margin-left: 72px; margin-top: 56px; padding: 20px; min-height: 100vh; }
+        /* Grid & Cards */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
-        
-        /* VIDEO CARDS */
-        .card { cursor: pointer; }
-        .v-thumb { width: 100%; aspect-ratio: 16/9; background: #222; border-radius: 12px; object-fit: cover; transition: 0.3s; }
-        .card:hover .v-thumb { border-radius: 0; }
-        .v-info { display: flex; gap: 12px; margin-top: 12px; }
-        .v-chan-pic { width: 36px; height: 36px; border-radius: 50%; background: #333; }
-        .v-details h4 { margin: 0; font-size: 15px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .v-details p { margin: 4px 0 0; font-size: 13px; color: var(--text-gray); }
+        .card { cursor: pointer; width: 100%; }
+        .v-thumb { width: 100%; aspect-ratio: 16/9; background: #222; border-radius: 12px; object-fit: cover; }
+        .v-meta { display: flex; gap: 12px; margin-top: 10px; }
+        .v-chan-pic { width: 36px; height: 36px; border-radius: 50%; }
+        .v-title { font-weight: 500; font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .v-stats { color: var(--text-gray); font-size: 12px; margin-top: 4px; }
 
-        /* CHANNEL PAGE */
-        .chan-header { margin: -20px -20px 20px -20px; }
-        .chan-banner { width: 100%; height: 200px; background: #333; object-fit: cover; }
-        .chan-info-bar { padding: 20px; display: flex; align-items: center; gap: 20px; border-bottom: 1px solid var(--border); }
-        .chan-big-pic { width: 80px; height: 80px; border-radius: 50%; border: 2px solid var(--border); }
-        .sub-btn { background: white; color: black; border: none; padding: 10px 20px; border-radius: 20px; font-weight: bold; cursor: pointer; }
-        .sub-btn.unsub { background: #333; color: white; }
+        /* Pages */
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
-        /* MODALS */
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 2000; align-items: center; justify-content: center; }
-        .modal-content { background: var(--surface); padding: 30px; border-radius: 15px; width: 450px; display: flex; flex-direction: column; gap: 15px; }
-        .modal-content input, .modal-content textarea { background: #121212; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 8px; outline: none; }
-        .btn-act { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
+        /* Channel Section */
+        .chan-banner { width: 100%; height: 150px; background: linear-gradient(90deg, #222, #444); border-radius: 15px; object-fit: cover; }
+        .chan-info { display: flex; align-items: center; gap: 20px; padding: 20px 0; }
+        .chan-pic-big { width: 80px; height: 80px; border-radius: 50%; }
 
-        /* PLAYER */
-        #player-view { display: none; }
-        .v-container { width: 100%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
-        .v-container iframe { width: 100%; height: 100%; border: none; }
+        /* Modals */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; }
+        .modal-box { background: var(--surface); padding: 25px; border-radius: 15px; width: 400px; display: flex; flex-direction: column; gap: 15px; }
+        .modal-box input, .modal-box textarea { background: #000; border: 1px solid var(--border); color: white; padding: 10px; border-radius: 8px; }
+        .btn-main { background: var(--accent); color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; cursor: pointer; }
 
-        /* STUDIO */
-        .studio-card { background: #252525; padding: 15px; border-radius: 10px; margin-bottom: 10px; display: flex; align-items: center; gap: 15px; }
-        .studio-card img { width: 120px; border-radius: 6px; }
+        /* Player */
+        .player-container { width: 100%; max-width: 900px; aspect-ratio: 16/9; background: #000; border-radius: 12px; overflow: hidden; }
+        iframe { width: 100%; height: 100%; border: none; }
     </style>
 </head>
 <body>
 
     <header>
-        <div class="logo" onclick="ui.showPage('home')"><i class="material-icons">play_circle_filled</i> PaylTube</div>
-        <div class="search-bar">
-            <input type="text" id="searchInput" placeholder="Поиск видео или каналов..." oninput="alg.search()">
-            <i class="material-icons" style="padding: 8px; color: gray;">search</i>
+        <div class="logo" onclick="app.nav('home')">
+            <i class="material-icons">play_circle</i> PaylTube
         </div>
-        <div id="auth-box">
-            <button class="user-btn" onclick="user.login()"><i class="material-icons">account_circle</i> ВОЙТИ</button>
+        <div class="search-bar">
+            <input type="text" id="searchInp" placeholder="Поиск" oninput="app.search()">
+            <i class="material-icons" style="color:gray">search</i>
+        </div>
+        <div id="authZone">
+            <button class="btn-login" onclick="app.login()">
+                <i class="material-icons">account_circle</i> ВОЙТИ
+            </button>
         </div>
     </header>
 
     <nav>
-        <div class="nav-link" onclick="ui.showPage('home')"><i class="material-icons">home</i><span>Главная</span></div>
-        <div class="nav-link" onclick="ui.showPage('subs')"><i class="material-icons">subscriptions</i><span>Подписки</span></div>
-        <div class="nav-link" onclick="ui.openModal('upload')"><i class="material-icons">add_circle_outline</i><span>Создать</span></div>
-        <div class="nav-link" onclick="ui.showPage('studio')"><i class="material-icons">video_settings</i><span>Студия</span></div>
+        <div class="nav-link" onclick="app.nav('home')"><i class="material-icons">home</i><span>Главная</span></div>
+        <div class="nav-link" onclick="app.nav('subs')"><i class="material-icons">subscriptions</i><span>Подписки</span></div>
+        <div class="nav-link" onclick="app.openModal('upload')"><i class="material-icons">video_call</i><span>Создать</span></div>
+        <div class="nav-link" onclick="app.nav('studio')"><i class="material-icons">video_library</i><span>Студия</span></div>
+        <div class="nav-link" onclick="app.viewProfile()"><i class="material-icons">person</i><span>Профиль</span></div>
     </nav>
 
-    <main id="app-content">
-        <div id="home-page">
-            <div class="grid" id="videoGrid"></div>
+    <main>
+        <div id="page-home" class="page" style="display: block;">
+            <div class="grid" id="mainGrid"></div>
         </div>
 
-        <div id="channel-view" style="display: none;">
+        <div id="page-channel" class="page">
             <div id="channelHeader"></div>
-            <div class="grid" id="channelVideos"></div>
+            <h3 style="margin-top:20px;">Видео канала</h3>
+            <div class="grid" id="channelGrid"></div>
         </div>
 
-        <div id="player-view">
-            <div class="v-container" id="playerFrame"></div>
-            <h2 id="pTitle" style="margin-top:20px;"></h2>
-            <div id="pChannelInfo" style="display:flex; align-items:center; gap:15px; margin: 15px 0;"></div>
-            <p id="pDesc" style="background:#222; padding:15px; border-radius:10px; color:#ccc;"></p>
+        <div id="page-player" class="page">
+            <div class="player-container" id="videoBox"></div>
+            <h1 id="p-title" style="margin-top:15px;"></h1>
+            <div id="p-author-box" style="display:flex; align-items:center; gap:10px; margin-bottom:15px;"></div>
+            <div id="p-desc" style="background:#222; padding:15px; border-radius:10px;"></div>
         </div>
 
-        <div id="studio-view" style="display: none;">
-            <h2>Управление контентом</h2>
-            <div id="studioActions" style="margin-bottom:20px;">
-                <button class="user-btn" onclick="ui.openModal('chanEdit')">Настроить канал</button>
-            </div>
+        <div id="page-studio" class="page">
+            <h2>Творческая студия</h2>
+            <button class="btn-main" onclick="app.openModal('editChan')" style="margin-bottom:20px">Настроить канал</button>
             <div id="studioList"></div>
         </div>
     </main>
 
-    <div class="modal" id="modalWindow">
-        <div class="modal-content" id="modalInner"></div>
+    <div class="modal" id="appModal">
+        <div class="modal-box" id="modalContent"></div>
     </div>
 
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
@@ -121,6 +118,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
 
     <script>
+        // Конфигурация
         const firebaseConfig = {
             apiKey: "AIzaSyC9Itsw9O3tucSZrjhoPvDwXu5PCOof7FI",
             authDomain: "payltube-app.firebaseapp.com",
@@ -133,205 +131,196 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
-        // --- МОДЕЛЬ ДАННЫХ И ПОЛЬЗОВАТЕЛЬ ---
-        const user = {
-            data: null,
+        const app = {
+            user: null,
             channel: null,
-            async login() {
-                const res = await auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
-                this.checkChannel(res.user);
+            videos: [],
+
+            async init() {
+                auth.onAuthStateChanged(async (u) => {
+                    if (u) {
+                        this.user = u;
+                        await this.getOrCreateChannel(u);
+                        this.renderUser();
+                    }
+                });
+                this.loadVideos();
             },
-            async checkChannel(u) {
-                this.data = u;
+
+            async getOrCreateChannel(u) {
                 const doc = await db.collection("channels").doc(u.uid).get();
-                if(!doc.exists) {
-                    await db.collection("channels").doc(u.uid).set({
+                if (!doc.exists) {
+                    const newChan = {
                         name: u.displayName,
-                        desc: "Добро пожаловать на мой канал!",
+                        desc: "Добро пожаловать!",
                         avatar: u.photoURL,
                         banner: "https://images.unsplash.com/photo-1557683316-973673baf926",
                         subs: []
-                    });
+                    };
+                    await db.collection("channels").doc(u.uid).set(newChan);
+                    this.channel = newChan;
+                } else {
+                    this.channel = doc.data();
                 }
-                this.channel = (await db.collection("channels").doc(u.uid).get()).data();
-                ui.renderAuth();
-            }
-        };
-
-        // --- АЛГОРИТМЫ ---
-        const alg = {
-            allVideos: [],
-            async load() {
-                const snap = await db.collection("videos").get();
-                this.allVideos = snap.docs.map(d => ({id: d.id, ...d.data()}));
-                
-                // Умная сортировка: Популярность = (Просмотры * 2) + Показы
-                this.allVideos.sort((a,b) => ((b.views*2) + b.imps) - ((a.views*2) + a.imps));
-                
-                this.render(this.allVideos, "videoGrid");
-                // Увеличиваем показы (Impressions) для алгоритма
-                this.allVideos.forEach(v => db.collection("videos").doc(v.id).update({ imps: (v.imps || 0) + 1 }));
             },
-            render(list, targetId) {
-                const grid = document.getElementById(targetId);
-                grid.innerHTML = list.map(v => `
-                    <div class="card" onclick="ui.play('${v.id}')">
+
+            renderUser() {
+                document.getElementById('authZone').innerHTML = `
+                    <img src="${this.user.photoURL}" class="avatar" onclick="app.viewProfile()">
+                `;
+            },
+
+            login() {
+                auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+            },
+
+            nav(pageId) {
+                document.querySelectorAll('.page').forEach(p => p.style.display = 'none');
+                document.getElementById('page-' + pageId).style.display = 'block';
+                if(pageId === 'home') this.loadVideos();
+                if(pageId === 'studio') this.loadStudio();
+            },
+
+            async loadVideos() {
+                const snap = await db.collection("videos").orderBy("date", "desc").get();
+                this.videos = snap.docs.map(d => ({id: d.id, ...d.data()}));
+                this.renderGrid(this.videos, "mainGrid");
+            },
+
+            renderGrid(list, target) {
+                const el = document.getElementById(target);
+                el.innerHTML = list.map(v => `
+                    <div class="card" onclick="app.play('${v.id}')">
                         <img src="${v.thumb}" class="v-thumb">
-                        <div class="v-info">
-                            <img src="${v.authorPic}" class="v-chan-pic" onclick="event.stopPropagation(); ui.viewChannel('${v.uid}')">
-                            <div class="v-details">
-                                <h4>${v.title}</h4>
-                                <p>${v.authorName}<br>${v.views || 0} просмотров</p>
+                        <div class="v-meta">
+                            <img src="${v.authorPic}" class="v-chan-pic">
+                            <div>
+                                <div class="v-title">${v.title}</div>
+                                <div class="v-stats">${v.authorName} • ${v.views} просмотров</div>
                             </div>
                         </div>
                     </div>
                 `).join('');
             },
-            search() {
-                const q = document.getElementById('searchInput').value.toLowerCase();
-                const filtered = this.allVideos.filter(v => v.title.toLowerCase().includes(q) || v.authorName.toLowerCase().includes(q));
-                this.render(filtered, "videoGrid");
-            }
-        };
 
-        // --- ИНТЕРФЕЙС (UI) ---
-        const ui = {
-            showPage(page) {
-                ['home', 'channel', 'player', 'studio'].forEach(p => document.getElementById(p + '-page')?.style.display || (document.getElementById(p + '-view').style.display = 'none'));
-                document.getElementById(page + (page=='home'?'':'-view') + (page=='home'?'-page':'')).style.display = 'block';
-                if(page === 'home') alg.load();
-                if(page === 'studio') this.loadStudio();
+            parseUrl(url) {
+                if(url.includes('youtube.com/watch?v=')) return url.replace('watch?v=', 'embed/');
+                if(url.includes('youtu.be/')) return url.replace('youtu.be/', 'youtube.com/embed/');
+                return url;
             },
-            renderAuth() {
-                if(user.data) {
-                    document.getElementById('auth-box').innerHTML = `<img src="${user.data.photoURL}" class="avatar" onclick="ui.showPage('studio')">`;
-                }
+
+            play(id) {
+                const v = this.videos.find(x => x.id === id);
+                this.nav('player');
+                document.getElementById('videoBox').innerHTML = `<iframe src="${this.parseUrl(v.url)}" allowfullscreen autoplay></iframe>`;
+                document.getElementById('p-title').innerText = v.title;
+                document.getElementById('p-desc').innerText = v.desc;
+                document.getElementById('p-author-box').innerHTML = `
+                    <img src="${v.authorPic}" class="avatar">
+                    <b onclick="app.viewChannel('${v.uid}')" style="cursor:pointer">${v.authorName}</b>
+                `;
+                db.collection("videos").doc(id).update({ views: (v.views || 0) + 1 });
             },
-            openModal(type, data = null) {
-                const win = document.getElementById('modalWindow');
-                const inner = document.getElementById('modalInner');
-                win.style.display = 'flex';
-                
+
+            async viewChannel(uid) {
+                this.nav('channel');
+                const chan = (await db.collection("channels").doc(uid).get()).data();
+                document.getElementById('channelHeader').innerHTML = `
+                    <img src="${chan.banner}" class="chan-banner">
+                    <div class="chan-info">
+                        <img src="${chan.avatar}" class="chan-pic-big">
+                        <div>
+                            <h2>${chan.name}</h2>
+                            <p>${chan.desc}</p>
+                        </div>
+                    </div>
+                `;
+                const myVids = this.videos.filter(v => v.uid === uid);
+                this.renderGrid(myVids, "channelGrid");
+            },
+
+            viewProfile() {
+                if(!this.user) return this.login();
+                this.viewChannel(this.user.uid);
+            },
+
+            openModal(type) {
+                if(!this.user) return this.login();
+                const m = document.getElementById('appModal');
+                const box = document.getElementById('modalContent');
+                m.style.display = 'flex';
+
                 if(type === 'upload') {
-                    inner.innerHTML = `
+                    box.innerHTML = `
                         <h3>Загрузить видео</h3>
-                        <input id="m-title" placeholder="Название">
-                        <textarea id="m-desc" placeholder="Описание"></textarea>
-                        <input id="m-url" placeholder="Ссылка (YouTube/VK/Direct)">
-                        <input id="m-thumb" placeholder="Ссылка на обложку (URL)">
-                        <button class="btn-act" onclick="ui.action('publish')">ОПУБЛИКОВАТЬ</button>
-                        <button onclick="ui.closeModal()">Отмена</button>`;
-                } else if(type === 'chanEdit') {
-                    inner.innerHTML = `
+                        <input id="in-title" placeholder="Название">
+                        <textarea id="in-desc" placeholder="Описание"></textarea>
+                        <input id="in-url" placeholder="Ссылка на YouTube">
+                        <input id="in-thumb" placeholder="Ссылка на обложку">
+                        <button class="btn-main" onclick="app.action('upload')">ОПУБЛИКОВАТЬ</button>
+                        <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Отмена</button>
+                    `;
+                } else if(type === 'editChan') {
+                    box.innerHTML = `
                         <h3>Настройка канала</h3>
-                        <input id="c-name" value="${user.channel.name}">
-                        <textarea id="c-desc">${user.channel.desc}</textarea>
-                        <input id="c-banner" value="${user.channel.banner}" placeholder="URL баннера">
-                        <button class="btn-act" onclick="ui.action('saveChan')">СОХРАНИТЬ</button>
-                        <button onclick="ui.closeModal()">Отмена</button>`;
-                } else if(type === 'editVideo') {
-                    inner.innerHTML = `
-                        <h3>Редактировать видео</h3>
-                        <input id="ev-title" value="${data.title}">
-                        <textarea id="ev-desc">${data.desc}</textarea>
-                        <button class="btn-act" onclick="ui.action('updateVideo', '${data.id}')">ОБНОВИТЬ</button>
-                        <button onclick="ui.closeModal()">Отмена</button>`;
+                        <input id="in-name" value="${this.channel.name}">
+                        <textarea id="in-cdesc">${this.channel.desc}</textarea>
+                        <button class="btn-main" onclick="app.action('saveChan')">СОХРАНИТЬ</button>
+                        <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Отмена</button>
+                    `;
                 }
             },
-            closeModal() { document.getElementById('modalWindow').style.display = 'none'; },
-            async action(type, id) {
-                if(type === 'publish') {
+
+            closeModal() { document.getElementById('appModal').style.display = 'none'; },
+
+            async action(type) {
+                if(type === 'upload') {
                     await db.collection("videos").add({
-                        title: document.getElementById('m-title').value,
-                        desc: document.getElementById('m-desc').value,
-                        url: document.getElementById('m-url').value.replace('watch?v=', 'embed/'),
-                        thumb: document.getElementById('m-thumb').value,
-                        uid: user.data.uid, authorName: user.channel.name, authorPic: user.channel.avatar,
-                        views: 0, imps: 0, date: firebase.firestore.FieldValue.serverTimestamp()
+                        title: document.getElementById('in-title').value,
+                        desc: document.getElementById('in-desc').value,
+                        url: document.getElementById('in-url').value,
+                        thumb: document.getElementById('in-thumb').value,
+                        uid: this.user.uid, authorName: this.channel.name, authorPic: this.user.photoURL,
+                        views: 0, date: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } else if(type === 'saveChan') {
-                    await db.collection("channels").doc(user.data.uid).update({
-                        name: document.getElementById('c-name').value,
-                        desc: document.getElementById('c-desc').value,
-                        banner: document.getElementById('c-banner').value
-                    });
-                } else if(type === 'updateVideo') {
-                    await db.collection("videos").doc(id).update({
-                        title: document.getElementById('ev-title').value,
-                        desc: document.getElementById('ev-desc').value
+                    await db.collection("channels").doc(this.user.uid).update({
+                        name: document.getElementById('in-name').value,
+                        desc: document.getElementById('in-cdesc').value
                     });
                 }
                 location.reload();
             },
-            async viewChannel(uid) {
-                this.showPage('channel');
-                const chan = (await db.collection("channels").doc(uid).get()).data();
-                const isSubbed = user.data && chan.subs.includes(user.data.uid);
-                
-                document.getElementById('channelHeader').innerHTML = `
-                    <img src="${chan.banner}" class="chan-banner">
-                    <div class="chan-info-bar">
-                        <img src="${chan.avatar}" class="chan-big-pic">
-                        <div style="flex:1">
-                            <h2>${chan.name}</h2>
-                            <p>${chan.subs.length} подписчиков • ${chan.desc}</p>
-                        </div>
-                        <button class="sub-btn ${isSubbed?'unsub':''}" onclick="ui.toggleSub('${uid}')">${isSubbed?'ВЫ ПОДПИСАНЫ':'ПОДПИСАТЬСЯ'}</button>
-                    </div>`;
-                
-                const myVideos = alg.allVideos.filter(v => v.uid === uid);
-                alg.render(myVideos, "channelVideos");
-            },
-            async toggleSub(targetUid) {
-                if(!user.data) return user.login();
-                const ref = db.collection("channels").doc(targetUid);
-                const chan = (await ref.get()).data();
-                let newSubs = chan.subs || [];
-                if(newSubs.includes(user.data.uid)) {
-                    newSubs = newSubs.filter(id => id !== user.data.uid);
-                } else {
-                    newSubs.push(user.data.uid);
-                }
-                await ref.update({ subs: newSubs });
-                this.viewChannel(targetUid);
-            },
-            play(id) {
-                const v = alg.allVideos.find(x => x.id === id);
-                this.showPage('player');
-                document.getElementById('playerFrame').innerHTML = `<iframe src="${v.url}" allowfullscreen autoplay></iframe>`;
-                document.getElementById('pTitle').innerText = v.title;
-                document.getElementById('pDesc').innerText = v.desc;
-                document.getElementById('pChannelInfo').innerHTML = `
-                    <img src="${v.authorPic}" class="avatar">
-                    <b onclick="ui.viewChannel('${v.uid}')" style="cursor:pointer">${v.authorName}</b>`;
-                db.collection("videos").doc(id).update({ views: (v.views || 0) + 1 });
-            },
+
             async loadStudio() {
-                if(!user.data) return;
-                const snap = await db.collection("videos").where("uid", "==", user.data.uid).get();
+                const snap = await db.collection("videos").where("uid", "==", this.user.uid).get();
                 const list = document.getElementById('studioList');
-                list.innerHTML = snap.docs.map(doc => {
-                    const v = doc.data();
-                    return `
-                        <div class="studio-card">
-                            <img src="${v.thumb}">
-                            <div style="flex:1"><b>${v.title}</b><br><small>${v.views} просмотров</small></div>
-                            <button onclick="ui.openModal('editVideo', {id:'${doc.id}', title:'${v.title}', desc:'${v.desc}'})">ИЗМЕНИТЬ</button>
-                            <button style="color:red" onclick="ui.deleteVideo('${doc.id}')">УДАЛИТЬ</button>
-                        </div>`;
-                }).join('');
+                list.innerHTML = snap.docs.map(doc => `
+                    <div style="display:flex; gap:15px; background:#222; padding:10px; border-radius:10px; margin-bottom:10px; align-items:center;">
+                        <img src="${doc.data().thumb}" width="100" style="border-radius:5px">
+                        <div style="flex:1">${doc.data().title}</div>
+                        <button style="color:red; background:none; border:1px solid red; padding:5px; border-radius:5px; cursor:pointer" onclick="app.deleteVideo('${doc.id}')">Удалить</button>
+                    </div>
+                `).join('');
             },
+
             async deleteVideo(id) {
-                if(confirm("Удалить видео навсегда?")) {
+                if(confirm("Удалить?")) {
                     await db.collection("videos").doc(id).delete();
                     this.loadStudio();
                 }
+            },
+
+            search() {
+                const q = document.getElementById('searchInp').value.toLowerCase();
+                const filtered = this.videos.filter(v => v.title.toLowerCase().includes(q));
+                this.renderGrid(filtered, "mainGrid");
             }
         };
 
-        auth.onAuthStateChanged(u => { if(u) user.checkChannel(u); });
-        alg.load();
+        app.init();
     </script>
 </body>
 </html>
+
 
