@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PaylTube</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --header-bg: #0f0f0f;
+            --sidebar-bg: #0f0f0f;
+            --text-main: #ffffff;
+            --text-sec: #aaaaaa;
+            --accent: #ff0033; /* Яркий красный PaylTube */
+            --hover: #272727;
+            --border: #303030;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Roboto', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            overflow-x: hidden;
+        }
+
+        /* HEADER */
+        header {
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            height: 56px;
+            background: var(--header-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 16px;
+            z-index: 100;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-area { display: flex; align-items: center; gap: 16px; cursor: pointer; }
+        .logo-text { font-size: 22px; font-weight: bold; letter-spacing: -1px; display: flex; align-items: center; gap: 4px; }
+        
+        /* Логотип P */
+        .p-logo {
+            width: 30px; height: 30px;
+            background: var(--accent);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-family: sans-serif;
+            font-size: 20px;
+            box-shadow: 0 0 10px rgba(255, 0, 51, 0.4);
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: #121212;
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 0 4px 0 16px;
+            width: 35%;
+            max-width: 600px;
+        }
+        .search-bar input {
+            background: transparent; border: none; color: white;
+            padding: 10px 0; flex: 1; outline: none; font-size: 16px;
+        }
+        .search-btn {
+            background: #222; border: none; border-left: 1px solid var(--border);
+            height: 40px; width: 64px; border-radius: 0 40px 40px 0;
+            cursor: pointer; display: flex; align-items: center; justify-content: center;
+        }
+        .search-btn i { color: var(--text-sec); }
+
+        .user-area button {
+            background: transparent; color: #3ea6ff; border: 1px solid #3ea6ff;
+            padding: 6px 14px; border-radius: 18px; cursor: pointer;
+            font-weight: 500; display: flex; align-items: center; gap: 6px;
+        }
+        .user-avatar {
+            width: 32px; height: 32px; border-radius: 50%;
+            cursor: pointer; display: none; object-fit: cover;
+        }
+
+        /* SIDEBAR */
+        .sidebar {
+            position: fixed; left: 0; top: 56px; bottom: 0;
+            width: 72px; background: var(--sidebar-bg);
+            display: flex; flex-direction: column; padding-top: 10px;
+        }
+        .nav-item {
+            display: flex; flex-direction: column; align-items: center;
+            justify-content: center; height: 72px; cursor: pointer;
+            color: white; text-decoration: none; border-radius: 10px; margin: 0 4px;
+        }
+        .nav-item:hover { background: var(--hover); }
+        .nav-item i { font-size: 24px; margin-bottom: 6px; }
+        .nav-item span { font-size: 10px; }
+
+        /* MAIN */
+        main { margin-top: 56px; margin-left: 72px; padding: 24px; }
+
+        /* VIDEO GRID */
+        .video-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 16px;
+        }
+        .video-card { cursor: pointer; transition: transform 0.2s; }
+        .video-card:hover { transform: scale(1.02); }
+        
+        .thumbnail {
+            width: 100%; aspect-ratio: 16/9; background: #222;
+            border-radius: 12px; overflow: hidden; position: relative;
+        }
+        .thumbnail img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .video-info { display: flex; gap: 12px; margin-top: 12px; }
+        .channel-icon { width: 36px; height: 36px; border-radius: 50%; background: #444; flex-shrink: 0; }
+        .details { display: flex; flex-direction: column; }
+        .title { font-weight: bold; font-size: 16px; margin-bottom: 4px; line-height: 1.2; color: #fff; }
+        .channel-name, .meta { color: var(--text-sec); font-size: 14px; }
+
+        /* STUDIO */
+        #studio-view { display: none; max-width: 1200px; margin: 0 auto; }
+        .studio-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; border-bottom: 1px solid #333; padding-bottom: 20px;}
+        
+        .stats-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin-bottom: 40px; }
+        .stat-box { background: #1f1f1f; padding: 24px; border-radius: 8px; text-align: center; border: 1px solid #333; }
+        .stat-val { font-size: 36px; font-weight: bold; color: white; margin: 10px 0; }
+        
+        .upload-btn {
+            background: var(--accent); color: white; border: none;
+            padding: 10px 24px; font-size: 14px; font-weight: bold;
+            border-radius: 2px; cursor: pointer; text-transform: uppercase;
+        }
+
+        /* LOADING SPINNER */
+        .loader {
+            border: 4px solid #333; border-top: 4px solid var(--accent);
+            border-radius: 50%; width: 40px; height: 40px;
+            animation: spin 1s linear infinite; margin: 50px auto; display: none;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-area" onclick="app.showHome()">
+            <i class="material-icons" style="color: white; margin-right: 15px;">menu</i>
+            <div class="logo-text">
+                <div class="p-logo">P</div>
+                PaylTube
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <input type="text" placeholder="Введите запрос">
+            <button class="search-btn"><i class="material-icons">search</i></button>
+        </div>
+
+        <div class="user-area">
+            <button id="loginBtn" onclick="app.login()">
+                <i class="material-icons">account_circle</i>
+                ВОЙТИ
+            </button>
+            <img id="userAvatar" class="user-avatar" src="" onclick="app.showStudio()" title="Перейти в студию">
+        </div>
+    </header>
+
+    <nav class="sidebar">
+        <a class="nav-item" onclick="app.showHome()"><i class="material-icons">home</i><span>Главная</span></a>
+        <a class="nav-item"><i class="material-icons">whatshot</i><span>Shorts</span></a>
+        <a class="nav-item"><i class="material-icons">subscriptions</i><span>Подписки</span></a>
+        <a class="nav-item" onclick="app.showStudio()"><i class="material-icons">bar_chart</i><span>Студия</span></a>
+    </nav>
+
+    <main>
+        <div id="loader" class="loader"></div>
+
+        <div id="home-view">
+            <h2 style="margin-top:0;">Рекомендации</h2>
+            <div class="video-grid" id="videoContainer">
+                </div>
+        </div>
+
+        <div id="studio-view">
+            <div class="studio-header">
+                <h1>Панель управления каналом</h1>
+                <button class="upload-btn" onclick="app.uploadVideoPrompt()">
+                    <i class="material-icons" style="vertical-align: middle; font-size: 18px;">file_upload</i> 
+                    ЗАГРУЗИТЬ ВИДЕО
+                </button>
+            </div>
+            
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div style="color:#aaa;">Всего просмотров</div>
+                    <div class="stat-val" id="totalViews">0</div>
+                    <div style="font-size:12px; color: #4CAF50;">▲ Растет</div>
+                </div>
+                <div class="stat-box">
+                    <div style="color:#aaa;">Видео на канале</div>
+                    <div class="stat-val" id="totalVideos">0</div>
+                </div>
+            </div>
+
+            <h3>Ваш контент</h3>
+            <div id="myVideosList" class="video-grid">
+                </div>
+        </div>
+    </main>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-analytics-compat.js"></script>
+
+    <script>
+        // 1. КОНФИГУРАЦИЯ FIREBASE (Твои данные)
+        const firebaseConfig = {
+            apiKey: "AIzaSyC9Itsw9O3tucSZrjhoPvDwXu5PCOof7FI",
+            authDomain: "payltube-app.firebaseapp.com",
+            projectId: "payltube-app",
+            storageBucket: "payltube-app.firebasestorage.app",
+            messagingSenderId: "1029272291239",
+            appId: "1:1029272291239:web:a0d44c6b5a21273af25882",
+            measurementId: "G-ZKEDBZ2BLZ"
+        };
+
+        // Инициализация
+        firebase.initializeApp(firebaseConfig);
+        const db = firebase.firestore();
+        const auth = firebase.auth();
+        const analytics = firebase.analytics();
+
+        // 2. ЛОГИКА ПРИЛОЖЕНИЯ
+        const app = {
+            user: null,
+
+            init: function() {
+                // Слушаем состояние входа
+                auth.onAuthStateChanged(user => {
+                    this.user = user;
+                    this.updateHeaderUI();
+                    if (user) {
+                        this.loadStudioStats(); // Если вошли, грузим статистику
+                    }
+                });
+                
+                // Грузим видео на главную
+                this.loadHomeVideos();
+            },
+
+            // --- АВТОРИЗАЦИЯ ---
+            login: function() {
+                const provider = new firebase.auth.GoogleAuthProvider();
+                auth.signInWithPopup(provider).catch(error => {
+                    console.error("Ошибка входа:", error);
+                    alert("Ошибка входа: " + error.message);
+                });
+            },
+
+            updateHeaderUI: function() {
+                const loginBtn = document.getElementById('loginBtn');
+                const avatar = document.getElementById('userAvatar');
+                
+                if (this.user) {
+                    loginBtn.style.display = 'none';
+                    avatar.style.display = 'block';
+                    avatar.src = this.user.photoURL;
+                } else {
+                    loginBtn.style.display = 'flex';
+                    avatar.style.display = 'none';
+                }
+            },
+
+            // --- НАВИГАЦИЯ ---
+            showHome: function() {
+                document.getElementById('home-view').style.display = 'block';
+                document.getElementById('studio-view').style.display = 'none';
+                this.loadHomeVideos(); // Обновляем ленту
+            },
+
+            showStudio: function() {
+                if (!this.user) {
+                    alert("Для входа в студию нужно авторизоваться!");
+                    this.login();
+                    return;
+                }
+                document.getElementById('home-view').style.display = 'none';
+                document.getElementById('studio-view').style.display = 'block';
+                this.loadStudioStats();
+            },
+
+            // --- ЗАГРУЗКА ДАННЫХ (HOME) ---
+            loadHomeVideos: function() {
+                const container = document.getElementById('videoContainer');
+                const loader = document.getElementById('loader');
+                
+                // container.innerHTML = ''; // Очистка перед загрузкой (можно убрать для плавности)
+                loader.style.display = 'block';
+
+                db.collection("videos").orderBy("date", "desc").limit(20).get().then((querySnapshot) => {
+                    let html = '';
+                    querySnapshot.forEach((doc) => {
+                        const vid = doc.data();
+                        const date = vid.date ? new Date(vid.date.seconds * 1000).toLocaleDateString() : 'Недавно';
+                        
+                        html += `
+                            <div class="video-card" onclick="app.watchVideo('${doc.id}', ${vid.views})">
+                                <div class="thumbnail">
+                                    <img src="${vid.thumbnail}" alt="thumb">
+                                    <div style="position:absolute; bottom:5px; right:5px; background:rgba(0,0,0,0.8); color:white; padding:2px 4px; font-size:12px; border-radius:4px;">12:34</div>
+                                </div>
+                                <div class="video-info">
+                                    <img class="channel-icon" src="${vid.authorPic || 'https://via.placeholder.com/36'}" />
+                                    <div class="details">
+                                        <div class="title">${vid.title}</div>
+                                        <div class="channel-name">${vid.authorName}</div>
+                                        <div class="meta">${vid.views} просмотров • ${date}</div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    });
+                    
+                    if(html === '') html = '<div style="grid-column: 1/-1; text-align:center; padding: 50px;">Пока нет видео. Станьте первым!</div>';
+                    
+                    container.innerHTML = html;
+                    loader.style.display = 'none';
+                });
+            },
+
+            // --- СТУДИЯ И ЗАГРУЗКА ---
+            uploadVideoPrompt: function() {
+                if (!this.user) return;
+                
+                const title = prompt("Придумайте название для видео:");
+                if (!title) return;
+
+                // Генерируем случайную картинку-превью (так как нет Storage)
+                const randomId = Math.floor(Math.random() * 1000);
+                const thumbnail = `https://picsum.photos/seed/${randomId}/320/180`; 
+
+                db.collection("videos").add({
+                    title: title,
+                    thumbnail: thumbnail,
+                    authorId: this.user.uid,
+                    authorName: this.user.displayName,
+                    authorPic: this.user.photoURL,
+                    views: 0,
+                    date: firebase.firestore.FieldValue.serverTimestamp()
+                }).then(() => {
+                    alert("Видео успешно опубликовано!");
+                    this.loadStudioStats(); // Обновить студию
+                }).catch(err => {
+                    console.error(err);
+                    alert("Ошибка: " + err.message);
+                });
+            },
+
+            loadStudioStats: function() {
+                if (!this.user) return;
+                const myVideosContainer = document.getElementById('myVideosList');
+                
+                db.collection("videos")
+                  .where("authorId", "==", this.user.uid)
+                  .orderBy("date", "desc")
+                  .get()
+                  .then(snapshot => {
+                      let totalViews = 0;
+                      let html = '';
+
+                      snapshot.forEach(doc => {
+                          const vid = doc.data();
+                          totalViews += vid.views;
+                          html += `
+                            <div class="video-card" style="opacity: 0.8;">
+                                <div class="thumbnail">
+                                    <img src="${vid.thumbnail}">
+                                </div>
+                                <div class="video-info">
+                                    <div class="details">
+                                        <div class="title">${vid.title}</div>
+                                        <div class="meta">${vid.views} просмотров</div>
+                                    </div>
+                                </div>
+                            </div>
+                          `;
+                      });
+
+                      document.getElementById('totalViews').innerText = totalViews;
+                      document.getElementById('totalVideos').innerText = snapshot.size;
+                      myVideosContainer.innerHTML = html;
+                  });
+            },
+
+            // --- ИМИТАЦИЯ ПРОСМОТРА ---
+            watchVideo: function(docId, currentViews) {
+                // Увеличиваем просмотры на +1 в базе
+                const newViews = currentViews + 1;
+                db.collection("videos").doc(docId).update({
+                    views: newViews
+                });
+                
+                // Просто визуальный эффект для пользователя
+                alert(`Вы смотрите видео! \n(Счетчик просмотров увеличился до ${newViews})`);
+                this.loadHomeVideos(); // Обновляем, чтобы показать новое число
+            }
+        };
+
+        // Запуск
+        app.init();
+    </script>
+</body>
+</html>
