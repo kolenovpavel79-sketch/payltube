@@ -3,53 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PaylTube Creator Studio</title>
+    <title>PaylTube Ultimate</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f0f0f; --surface: #1f1f1f; --accent: #ff0000;
-            --text: #ffffff; --text-gray: #aaaaaa; --border: #333333; --blue: #3ea6ff;
+            --bg: #0f0f0f; 
+            --surface: #1e1e1e; 
+            --surface-hover: #2d2d2d;
+            --accent: #ff0033;
+            --text: #ffffff; 
+            --text-sec: #aaaaaa; 
+            --border: #333333; 
+            --blue: #3ea6ff;
+            --radius: 16px;
+            --radius-sm: 8px;
         }
-        body { margin: 0; font-family: 'Roboto', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
+        body { margin: 0; font-family: 'Manrope', sans-serif; background: var(--bg); color: var(--text); overflow-x: hidden; }
         
-        header { position: fixed; top: 0; width: 100%; height: 56px; background: var(--bg); display: flex; align-items: center; justify-content: space-between; padding: 0 16px; z-index: 1000; border-bottom: 1px solid var(--border); box-sizing: border-box; }
-        nav { position: fixed; left: 0; top: 56px; width: 240px; bottom: 0; background: var(--bg); display: flex; flex-direction: column; padding: 12px; border-right: 1px solid var(--border); overflow-y: auto; }
-        main { margin-left: 240px; margin-top: 56px; height: calc(100vh - 56px); overflow-y: auto; padding: 24px; box-sizing: border-box; }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: #444; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
 
-        .logo { display: flex; align-items: center; gap: 8px; cursor: pointer; font-weight: bold; font-size: 20px; }
+        /* Layout */
+        header { position: fixed; top: 0; width: 100%; height: 64px; background: rgba(15, 15, 15, 0.95); backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: space-between; padding: 0 24px; z-index: 1000; box-sizing: border-box; }
+        nav { position: fixed; left: 0; top: 64px; width: 240px; bottom: 0; background: var(--bg); display: flex; flex-direction: column; padding: 16px 12px; overflow-y: auto; }
+        main { margin-left: 240px; margin-top: 64px; height: calc(100vh - 64px); overflow-y: auto; padding: 32px; box-sizing: border-box; }
+
+        /* Elements */
+        .logo { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 800; font-size: 22px; letter-spacing: -0.5px; }
         .logo i { color: var(--accent); font-size: 32px; }
         
-        .search-bar { flex: 0 1 600px; display: flex; background: #121212; border: 1px solid var(--border); border-radius: 40px; padding: 2px 20px; align-items: center; }
-        .search-bar input { width: 100%; background: none; border: none; color: white; padding: 10px; outline: none; }
+        .search-bar { flex: 0 1 500px; display: flex; background: #222; border: 1px solid #333; border-radius: 50px; padding: 4px 20px; align-items: center; transition: 0.2s; }
+        .search-bar:focus-within { border-color: #555; background: #1a1a1a; }
+        .search-bar input { width: 100%; background: none; border: none; color: white; padding: 10px; outline: none; font-family: inherit; font-size: 15px; }
         
-        .nav-item { display: flex; align-items: center; gap: 20px; padding: 10px 12px; border-radius: 10px; cursor: pointer; color: var(--text); text-decoration: none; }
-        .nav-item:hover { background: rgba(255,255,255,0.1); }
-        .nav-title { padding: 15px 12px 5px; font-size: 12px; color: var(--text-gray); text-transform: uppercase; font-weight: bold; }
+        .nav-item { display: flex; align-items: center; gap: 18px; padding: 12px 16px; border-radius: 12px; cursor: pointer; color: var(--text); text-decoration: none; transition: 0.2s; font-weight: 500; font-size: 15px; }
+        .nav-item:hover { background: var(--surface-hover); }
+        .nav-title { padding: 20px 16px 8px; font-size: 13px; color: var(--text-sec); font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; }
 
-        .btn-blue { background: none; border: 1px solid var(--blue); color: var(--blue); padding: 8px 16px; border-radius: 20px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 500; }
-        .avatar { width: 32px; height: 32px; border-radius: 50%; cursor: pointer; object-fit: cover; background: #333; }
+        .btn-blue { background: rgba(62, 166, 255, 0.1); border: none; color: var(--blue); padding: 10px 20px; border-radius: 50px; cursor: pointer; display: flex; align-items: center; gap: 8px; font-weight: 600; transition: 0.2s; }
+        .btn-blue:hover { background: rgba(62, 166, 255, 0.2); }
+        .avatar { width: 36px; height: 36px; border-radius: 50%; cursor: pointer; object-fit: cover; background: #333; transition: 0.2s; }
+        .avatar:hover { transform: scale(1.05); border: 2px solid white; }
 
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
-        .card { cursor: pointer; }
-        .v-thumb { width: 100%; aspect-ratio: 16/9; background: #222; border-radius: 12px; object-fit: cover; }
-        .v-meta { display: flex; gap: 12px; margin-top: 12px; }
-        .v-chan-pic { width: 36px; height: 36px; border-radius: 50%; background: #333; flex-shrink: 0; }
-        .v-title { font-weight: 500; font-size: 16px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        /* Grid & Cards */
+        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 24px; }
+        .card { cursor: pointer; transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); border-radius: var(--radius); overflow: hidden; position: relative; }
+        .card:hover { transform: scale(1.02); z-index: 10; }
+        
+        .thumb-box { position: relative; width: 100%; aspect-ratio: 16/9; border-radius: var(--radius); overflow: hidden; background: #000; }
+        .v-thumb { width: 100%; height: 100%; object-fit: cover; transition: opacity 0.3s; }
+        .preview-frame { position: absolute; inset: 0; width: 100%; height: 100%; border: none; pointer-events: none; z-index: 2; opacity: 0; transition: opacity 0.3s; }
+        
+        .v-meta { display: flex; gap: 14px; margin-top: 14px; padding: 0 4px; }
+        .v-chan-pic { width: 40px; height: 40px; border-radius: 50%; background: #333; flex-shrink: 0; }
+        .v-title { font-weight: 700; font-size: 16px; line-height: 1.4; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; margin-bottom: 6px; }
+        .v-stats { color: var(--text-sec); font-size: 14px; }
 
-        /* Studio Specific UI */
-        .studio-card { background: var(--surface); border: 1px solid var(--border); border-radius: 16px; padding: 16px; margin-bottom: 16px; display: flex; align-items: center; gap: 20px; }
-        .v-stats-row { display: flex; gap: 20px; margin-top: 10px; }
-        .v-stat-item { display: flex; align-items: center; gap: 6px; font-size: 13px; color: var(--text-gray); }
-        .v-stat-item b { color: var(--text); }
+        /* Player */
+        .v-container { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 24px; }
+        .player-wrapper { width: 100%; aspect-ratio: 16/9; background: #000; border-radius: 20px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+        iframe { width: 100%; height: 100%; border: none; }
+        
+        /* Studio */
+        .studio-card { background: var(--surface); border-radius: 20px; padding: 20px; margin-bottom: 16px; display: flex; align-items: flex-start; gap: 24px; transition: 0.2s; border: 1px solid transparent; }
+        .studio-card:hover { border-color: #444; background: var(--surface-hover); }
+        .stat-badge { display: inline-flex; align-items: center; gap: 6px; background: rgba(255,255,255,0.05); padding: 6px 12px; border-radius: 8px; font-size: 13px; color: #ddd; margin-right: 8px; }
+        .stat-badge i { font-size: 16px; color: var(--blue); }
+        .stat-badge.gold i { color: #ffd700; }
 
-        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.85); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(5px); }
-        .modal-box { background: var(--surface); padding: 30px; border-radius: 24px; width: 480px; display: flex; flex-direction: column; gap: 15px; border: 1px solid var(--border); }
-        .modal-box input, .modal-box textarea { background: #121212; border: 1px solid var(--border); color: white; padding: 12px; border-radius: 10px; outline: none; width: 100%; box-sizing: border-box; }
-        .btn-act { background: var(--accent); color: white; border: none; padding: 14px; border-radius: 12px; font-weight: bold; cursor: pointer; }
+        /* Modal */
+        .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center; backdrop-filter: blur(8px); }
+        .modal-box { background: #181818; padding: 32px; border-radius: 24px; width: 500px; display: flex; flex-direction: column; gap: 16px; box-shadow: 0 20px 60px rgba(0,0,0,0.6); border: 1px solid #333; }
+        .modal-box input, .modal-box textarea { background: #0a0a0a; border: 1px solid #333; color: white; padding: 14px; border-radius: 12px; outline: none; font-family: inherit; transition: 0.2s; }
+        .modal-box input:focus { border-color: var(--blue); }
+        .btn-act { background: var(--text); color: black; border: none; padding: 14px; border-radius: 12px; font-weight: 800; cursor: pointer; transition: 0.2s; }
+        .btn-act:hover { transform: scale(1.02); background: white; }
 
-        .page { display: none; }
-        .sub-btn { background: white; color: black; border: none; padding: 10px 24px; border-radius: 24px; font-weight: bold; cursor: pointer; }
+        .sub-btn { background: white; color: black; border: none; padding: 10px 24px; border-radius: 50px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .sub-btn:hover { background: #e0e0e0; }
+        .sub-btn.unsub { background: #333; color: white; }
+        .sub-btn.unsub:hover { background: #444; }
+
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -57,53 +97,62 @@
     <header>
         <div class="logo" onclick="app.nav('home')"><i class="material-icons">play_circle_filled</i> PaylTube</div>
         <div class="search-bar">
-            <input type="text" id="searchInp" placeholder="Поиск" oninput="app.search()">
-            <i class="material-icons" style="color:gray">search</i>
+            <input type="text" id="searchInp" placeholder="Найти видео..." oninput="app.search()">
+            <i class="material-icons" style="color:#666">search</i>
         </div>
         <div id="authZone">
-            <button class="btn-blue" onclick="app.login()"><i class="material-icons">account_circle</i> ВОЙТИ</button>
+            <button class="btn-blue" onclick="app.login()">ВОЙТИ</button>
         </div>
     </header>
 
     <nav>
         <div class="nav-item" onclick="app.nav('home')"><i class="material-icons">home</i> Главная</div>
         <div class="nav-item" onclick="app.nav('subs')"><i class="material-icons">subscriptions</i> Подписки</div>
-        <div style="height:1px; background:var(--border); margin:12px 0;"></div>
-        <div class="nav-title">Творческая студия</div>
-        <div class="nav-item" onclick="app.openModal('upload')"><i class="material-icons">video_call</i> Загрузить видео</div>
-        <div class="nav-item" onclick="app.nav('studio')"><i class="material-icons">bar_chart</i> Статистика и управление</div>
-        <div class="nav-item" onclick="app.viewProfile()"><i class="material-icons">person</i> Мой канал</div>
-        <div style="height:1px; background:var(--border); margin:12px 0;"></div>
+        <div style="height:1px; background:var(--border); margin:16px 16px;"></div>
+        <div class="nav-title">Автор</div>
+        <div class="nav-item" onclick="app.openModal('upload')"><i class="material-icons">add_circle</i> Загрузить</div>
+        <div class="nav-item" onclick="app.nav('studio')"><i class="material-icons">analytics</i> Студия</div>
+        <div class="nav-item" onclick="app.viewProfile()"><i class="material-icons">account_circle</i> Мой канал</div>
+        <div style="height:1px; background:var(--border); margin:16px 16px;"></div>
         <div class="nav-title">Подписки</div>
         <div id="sideSubs"></div>
     </nav>
 
     <main>
-        <div id="page-home" class="page" style="display: block;"><div class="grid" id="mainGrid"></div></div>
+        <div id="page-home" class="page" style="display: block;">
+            <div class="grid" id="mainGrid"></div>
+        </div>
         
         <div id="page-player" class="page">
-            <div style="max-width:1100px; margin:0 auto;">
-                <div id="vFrame" style="width:100%; aspect-ratio:16/9; background:#000; border-radius:16px; overflow:hidden;"></div>
-                <h1 id="vTitle" style="margin:20px 0 10px;"></h1>
-                <div id="vAuthorBox" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:20px;"></div>
-                <div id="vDesc" style="background:var(--surface); padding:20px; border-radius:12px; white-space: pre-wrap;"></div>
+            <div class="v-container">
+                <div>
+                    <div class="player-wrapper" id="vFrame"></div>
+                    <h1 id="vTitle" style="margin:24px 0 12px; font-size: 24px;"></h1>
+                    <div id="vAuthorBox" style="display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; padding-bottom:24px; border-bottom:1px solid #333;"></div>
+                    <div id="vDesc" style="background:var(--surface); padding:24px; border-radius:20px; line-height: 1.6; color: #ddd; white-space: pre-wrap;"></div>
+                </div>
             </div>
         </div>
 
         <div id="page-channel" class="page">
             <div id="chanHero"></div>
-            <div class="grid" id="chanGrid" style="margin-top:30px;"></div>
+            <div class="grid" id="chanGrid" style="margin-top:40px;"></div>
         </div>
 
         <div id="page-studio" class="page">
-            <h2 style="margin-bottom:20px;">Аналитика и контент</h2>
-            <div id="studioStats" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:15px; margin-bottom:30px;"></div>
-            <button class="btn-blue" onclick="app.openModal('editChan')" style="margin-bottom:30px;">Настроить канал и аватар</button>
-            <h3>Список ваших видео</h3>
+            <h1 style="margin-bottom:30px;">Панель управления</h1>
+            <div id="studioStats" style="display:grid; grid-template-columns: repeat(4, 1fr); gap:20px; margin-bottom:40px;"></div>
+            <div style="display:flex; gap:16px; margin-bottom:32px;">
+                <button class="btn-blue" onclick="app.openModal('editChan')">Редактировать канал</button>
+            </div>
+            <h3 style="color:var(--text-sec); margin-bottom:20px;">ВИДЕО НА КАНАЛЕ</h3>
             <div id="studioList"></div>
         </div>
 
-        <div id="page-subs" class="page"><h2>Ваши подписки</h2><div class="grid" id="subsGrid"></div></div>
+        <div id="page-subs" class="page">
+            <h1 style="margin-bottom:30px;">Свежее из подписок</h1>
+            <div class="grid" id="subsGrid"></div>
+        </div>
     </main>
 
     <div class="modal" id="appModal"><div class="modal-box" id="modalInner"></div></div>
@@ -125,8 +174,10 @@
         const db = firebase.firestore();
         const auth = firebase.auth();
 
+        let hoverTimer = null;
+
         const app = {
-            user: null, channel: null, allVideos: [],
+            user: null, channel: null, allVideos: [], currentVideoId: null,
 
             async init() {
                 auth.onAuthStateChanged(async u => {
@@ -143,7 +194,7 @@
             async getChannel(uid) {
                 const doc = await db.collection("channels").doc(uid).get();
                 if(!doc.exists) {
-                    this.channel = { name: this.user.displayName, desc: "Очередной крутой канал", avatar: this.user.photoURL, banner: "https://images.unsplash.com/photo-1614850523296-d8c1af93d400", subs: [], following: [] };
+                    this.channel = { name: this.user.displayName, desc: "Новый канал", avatar: this.user.photoURL, banner: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe", subs: [], following: [] };
                     await db.collection("channels").doc(uid).set(this.channel);
                 } else {
                     this.channel = doc.data();
@@ -151,7 +202,7 @@
             },
 
             renderAuth() {
-                document.getElementById('authZone').innerHTML = `<img src="${this.channel.avatar}" class="avatar" onclick="app.nav('studio')">`;
+                document.getElementById('authZone').innerHTML = `<img src="${this.channel.avatar}" class="avatar" onclick="app.viewProfile()" title="Мой канал">`;
             },
 
             login() { auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()); },
@@ -161,35 +212,70 @@
                 document.getElementById('page-'+p).style.display = 'block';
                 if(p === 'home') this.loadVideos();
                 if(p === 'studio') this.renderStudio();
+                if(p === 'subs') this.loadSubsFeed();
+                this.currentVideoId = null; // Reset when leaving player
             },
 
-            smartParse(url) {
-                if(url.includes('youtube.com/watch?v=')) return url.replace('watch?v=', 'embed/');
-                if(url.includes('youtu.be/')) return url.replace('youtu.be/', 'youtube.com/embed/');
-                if(url.includes('rutube.ru/video/')) {
+            // --- HOVER & PREVIEW LOGIC ---
+            startPreview(el, url) {
+                const box = el.querySelector('.thumb-box');
+                hoverTimer = setTimeout(() => {
+                    let embed = this.smartParse(url, true); // true = mute & autoplay
+                    const frame = document.createElement('iframe');
+                    frame.className = 'preview-frame';
+                    frame.src = embed;
+                    frame.allow = "autoplay; encrypted-media";
+                    box.appendChild(frame);
+                    // Fade in
+                    requestAnimationFrame(() => frame.style.opacity = '1');
+                }, 1200); // 1.2s delay
+            },
+
+            stopPreview(el) {
+                clearTimeout(hoverTimer);
+                const frame = el.querySelector('.preview-frame');
+                if(frame) frame.remove();
+            },
+
+            smartParse(url, isPreview = false) {
+                let res = url;
+                const params = isPreview ? '?autoplay=1&mute=1&controls=0&showinfo=0' : '?autoplay=1';
+                
+                if(url.includes('youtube.com/watch?v=')) res = url.replace('watch?v=', 'embed/');
+                else if(url.includes('youtu.be/')) res = url.replace('youtu.be/', 'youtube.com/embed/');
+                else if(url.includes('rutube.ru/video/')) {
                     const id = url.split('/video/')[1].split('/')[0];
-                    return `https://rutube.ru/play/embed/${id}`;
+                    res = `https://rutube.ru/play/embed/${id}`;
                 }
-                return url;
+                
+                // Add params if YouTube (Rutube handles params differently, mostly ignores in simple embed)
+                if(res.includes('youtube') || res.includes('youtu')) {
+                    res += res.includes('?') ? '&' + params.substring(1) : params;
+                }
+                return res;
             },
 
             async loadVideos() {
                 const snap = await db.collection("videos").orderBy("date", "desc").get();
                 this.allVideos = snap.docs.map(d => ({id: d.id, ...d.data()}));
                 this.renderGrid(this.allVideos, 'mainGrid');
+                // Impressions counter
                 this.allVideos.forEach(v => db.collection("videos").doc(v.id).update({ imps: (v.imps || 0) + 1 }));
             },
 
             renderGrid(list, target) {
                 const el = document.getElementById(target);
+                if(!list.length) { el.innerHTML = '<div style="color:gray">Пусто...</div>'; return; }
                 el.innerHTML = list.map(v => `
-                    <div class="card" onclick="app.play('${v.id}')">
-                        <img src="${v.thumb}" class="v-thumb">
+                    <div class="card" onclick="app.play('${v.id}')" onmouseenter="app.startPreview(this, '${v.url}')" onmouseleave="app.stopPreview(this)">
+                        <div class="thumb-box">
+                            <img src="${v.thumb}" class="v-thumb">
+                        </div>
                         <div class="v-meta">
                             <img src="${v.authorPic}" class="v-chan-pic" onclick="event.stopPropagation(); app.viewChannel('${v.uid}')">
                             <div style="flex:1">
                                 <div class="v-title">${v.title}</div>
-                                <div style="color:var(--text-gray); font-size:14px; margin-top:4px;">${v.authorName} • ${v.views || 0} просмотров</div>
+                                <div class="v-stats">${v.authorName}<br>${v.views || 0} просмотров • ${this.timeAgo(v.date)}</div>
                             </div>
                         </div>
                     </div>
@@ -198,6 +284,7 @@
 
             async play(id) {
                 const v = this.allVideos.find(x => x.id === id);
+                this.currentVideoId = id; // Store for sub tracking
                 this.nav('player');
                 document.getElementById('vFrame').innerHTML = `<iframe src="${this.smartParse(v.url)}" allow="autoplay; encrypted-media; fullscreen;" allowfullscreen></iframe>`;
                 document.getElementById('vTitle').innerText = v.title;
@@ -205,16 +292,55 @@
 
                 const isSub = this.channel?.following?.includes(v.uid);
                 document.getElementById('vAuthorBox').innerHTML = `
-                    <div style="display:flex; align-items:center; gap:12px">
-                        <img src="${v.authorPic}" class="avatar" style="width:48px; height:48px">
+                    <div style="display:flex; align-items:center; gap:16px">
+                        <img src="${v.authorPic}" class="avatar" style="width:56px; height:56px" onclick="app.viewChannel('${v.uid}')">
                         <div>
-                            <div style="font-weight:bold; font-size:18px; cursor:pointer" onclick="app.viewChannel('${v.uid}')">${v.authorName}</div>
-                            <div style="font-size:12px; color:gray">${v.views || 0} просмотров • ${v.imps || 0} показов</div>
+                            <div style="font-weight:800; font-size:18px; cursor:pointer" onclick="app.viewChannel('${v.uid}')">${v.authorName}</div>
+                            <div style="font-size:13px; color:var(--text-sec)">${v.views || 0} просмотров</div>
                         </div>
                     </div>
-                    ${this.user && v.uid !== this.user.uid ? `<button class="sub-btn" onclick="app.toggleSub('${v.uid}')">${isSub?'ВЫ ПОДПИСАНЫ':'ПОДПИСАТЬСЯ'}</button>` : ''}
+                    ${this.user && v.uid !== this.user.uid ? `<button class="sub-btn ${isSub?'unsub':''}" onclick="app.toggleSub('${v.uid}')">${isSub?'ВЫ ПОДПИСАНЫ':'ПОДПИСАТЬСЯ'}</button>` : ''}
                 `;
                 db.collection("videos").doc(id).update({ views: (v.views || 0) + 1 });
+            },
+
+            async toggleSub(tuid) {
+                if(!this.user) return this.login();
+                const mRef = db.collection("channels").doc(this.user.uid);
+                const tRef = db.collection("channels").doc(tuid);
+                
+                let following = this.channel.following || [];
+                let tSubs = (await tRef.get()).data().subs || [];
+                const isSubscribing = !following.includes(tuid);
+
+                if(!isSubscribing) {
+                    following = following.filter(id => id !== tuid);
+                    tSubs = tSubs.filter(id => id !== this.user.uid);
+                } else {
+                    following.push(tuid);
+                    tSubs.push(this.user.uid);
+                    
+                    // --- TRACK SUB SOURCE ---
+                    if(this.currentVideoId) {
+                        db.collection("videos").doc(this.currentVideoId).update({
+                            subGain: firebase.firestore.FieldValue.increment(1)
+                        });
+                    }
+                }
+
+                await mRef.update({ following });
+                await tRef.update({ subs: tSubs });
+                await this.getChannel(this.user.uid);
+                
+                // Update UI without reload if on player page
+                if(this.currentVideoId) {
+                    const btn = document.querySelector('.sub-btn');
+                    btn.classList.toggle('unsub');
+                    btn.innerText = isSubscribing ? 'ВЫ ПОДПИСАНЫ' : 'ПОДПИСАТЬСЯ';
+                } else {
+                    this.viewChannel(tuid);
+                }
+                this.renderSideSubs();
             },
 
             async renderStudio() {
@@ -222,39 +348,36 @@
                 const myVids = this.allVideos.filter(v => v.uid === this.user.uid);
                 const totalViews = myVids.reduce((s, v) => s + (v.views || 0), 0);
                 const totalImps = myVids.reduce((s, v) => s + (v.imps || 0), 0);
+                const totalSubGain = myVids.reduce((s, v) => s + (v.subGain || 0), 0);
                 const ctr = totalImps > 0 ? ((totalViews / totalImps) * 100).toFixed(1) : 0;
 
-                document.getElementById('studioStats').innerHTML = `
-                    <div style="background:var(--surface); padding:15px; border-radius:12px; border:1px solid var(--border)">
-                        <div style="color:gray; font-size:12px">Подписчики</div><h2 style="margin:5px 0 0">${this.channel.subs?.length || 0}</h2>
-                    </div>
-                    <div style="background:var(--surface); padding:15px; border-radius:12px; border:1px solid var(--border)">
-                        <div style="color:gray; font-size:12px">Просмотры</div><h2 style="margin:5px 0 0">${totalViews}</h2>
-                    </div>
-                    <div style="background:var(--surface); padding:15px; border-radius:12px; border:1px solid var(--border)">
-                        <div style="color:gray; font-size:12px">Показы</div><h2 style="margin:5px 0 0">${totalImps}</h2>
-                    </div>
-                    <div style="background:var(--surface); padding:15px; border-radius:12px; border:1px solid var(--border)">
-                        <div style="color:gray; font-size:12px">CTR канала</div><h2 style="margin:5px 0 0">${ctr}%</h2>
-                    </div>
-                `;
+                const StatBox = (label, val) => `
+                    <div style="background:var(--surface); padding:24px; border-radius:20px; border:1px solid #333;">
+                        <div style="color:var(--text-sec); font-size:13px; font-weight:700; text-transform:uppercase;">${label}</div>
+                        <div style="font-size:32px; font-weight:800; margin-top:8px;">${val}</div>
+                    </div>`;
+
+                document.getElementById('studioStats').innerHTML = 
+                    StatBox('Всего подписчиков', this.channel.subs?.length || 0) +
+                    StatBox('Пришло с видео', `+${totalSubGain}`) +
+                    StatBox('Просмотры', totalViews) +
+                    StatBox('CTR (Кликабельность)', ctr + '%');
 
                 document.getElementById('studioList').innerHTML = myVids.map(v => {
                     const vCtr = v.imps > 0 ? ((v.views / v.imps) * 100).toFixed(1) : 0;
                     return `
                     <div class="studio-card">
-                        <img src="${v.thumb}" width="120" style="border-radius:8px">
+                        <img src="${v.thumb}" width="160" style="border-radius:12px; aspect-ratio:16/9; object-fit:cover;">
                         <div style="flex:1">
-                            <b style="font-size:16px">${v.title}</b>
-                            <div class="v-stats-row">
-                                <div class="v-stat-item"><i class="material-icons" style="font-size:16px">visibility</i> <b>${v.views || 0}</b></div>
-                                <div class="v-stat-item"><i class="material-icons" style="font-size:16px">campaign</i> <b>${v.imps || 0}</b></div>
-                                <div class="v-stat-item"><i class="material-icons" style="font-size:16px">trending_up</i> <b>${vCtr}% CTR</b></div>
+                            <div style="font-size:18px; font-weight:700; margin-bottom:12px;">${v.title}</div>
+                            <div style="display:flex; flex-wrap:wrap; gap:8px;">
+                                <div class="stat-badge"><i class="material-icons">visibility</i> ${v.views || 0}</div>
+                                <div class="stat-badge"><i class="material-icons">campaign</i> ${v.imps || 0}</div>
+                                <div class="stat-badge gold"><i class="material-icons">person_add</i> +${v.subGain || 0}</div>
+                                <div class="stat-badge"><i class="material-icons">ads_click</i> ${vCtr}%</div>
                             </div>
                         </div>
-                        <div style="display:flex; gap:10px;">
-                            <button onclick="app.deleteVideo('${v.id}')" style="background:none; border:1px solid #ff4444; color:#ff4444; padding:8px; border-radius:8px; cursor:pointer"><i class="material-icons">delete</i></button>
-                        </div>
+                        <button onclick="app.deleteVideo('${v.id}')" style="background:#331111; color:#ff4444; border:none; padding:12px; border-radius:12px; cursor:pointer;"><i class="material-icons">delete</i></button>
                     </div>`;
                 }).join('');
             },
@@ -263,24 +386,25 @@
                 const inner = document.getElementById('modalInner');
                 document.getElementById('appModal').style.display = 'flex';
                 if(type === 'upload') {
-                    inner.innerHTML = `<h3>Загрузить видео</h3>
-                        <input id="ut" placeholder="Название">
-                        <textarea id="ud" placeholder="Описание"></textarea>
-                        <input id="uu" placeholder="Ссылка (YouTube или Rutube)">
-                        <input id="uth" placeholder="URL обложки (картинка)">
-                        <button class="btn-act" onclick="app.action('publish')">ОПУБЛИКОВАТЬ</button>
-                        <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Отмена</button>`;
+                    inner.innerHTML = `<h2>Новое видео</h2>
+                        <input id="ut" placeholder="Заголовок">
+                        <textarea id="ud" placeholder="О чем этот ролик?" rows="4"></textarea>
+                        <input id="uu" placeholder="Ссылка (YouTube/Rutube)">
+                        <input id="uth" placeholder="Ссылка на обложку (JPG/PNG)">
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn-act" style="flex:1" onclick="app.action('publish')">ОПУБЛИКОВАТЬ</button>
+                            <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Закрыть</button>
+                        </div>`;
                 } else if(type === 'editChan') {
-                    inner.innerHTML = `<h3>Настройки канала</h3>
-                        <div style="font-size:12px; color:var(--blue); margin-bottom:5px;">Имя канала</div>
-                        <input id="cn" value="${this.channel.name}">
-                        <div style="font-size:12px; color:var(--blue); margin-top:10px; margin-bottom:5px;">URL Аватарки</div>
-                        <input id="ca" value="${this.channel.avatar}">
-                        <div style="font-size:12px; color:var(--blue); margin-top:10px; margin-bottom:5px;">URL Баннера</div>
-                        <input id="cb" value="${this.channel.banner}">
-                        <textarea id="cd" style="margin-top:10px;" placeholder="Описание">${this.channel.desc}</textarea>
-                        <button class="btn-act" onclick="app.action('saveChan')">СОХРАНИТЬ ВСЁ</button>
-                        <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Отмена</button>`;
+                    inner.innerHTML = `<h2>Настройки канала</h2>
+                        <label style="font-size:12px; color:gray;">Название</label><input id="cn" value="${this.channel.name}">
+                        <label style="font-size:12px; color:gray;">Аватар (URL)</label><input id="ca" value="${this.channel.avatar}">
+                        <label style="font-size:12px; color:gray;">Баннер (URL)</label><input id="cb" value="${this.channel.banner}">
+                        <label style="font-size:12px; color:gray;">Описание</label><textarea id="cd">${this.channel.desc}</textarea>
+                        <div style="display:flex; gap:10px; margin-top:10px;">
+                            <button class="btn-act" style="flex:1" onclick="app.action('saveChan')">СОХРАНИТЬ</button>
+                            <button onclick="app.closeModal()" style="background:none; border:none; color:gray; cursor:pointer">Закрыть</button>
+                        </div>`;
                 }
             },
 
@@ -290,55 +414,49 @@
                         title: document.getElementById('ut').value, desc: document.getElementById('ud').value,
                         url: document.getElementById('uu').value, thumb: document.getElementById('uth').value,
                         uid: this.user.uid, authorName: this.channel.name, authorPic: this.channel.avatar,
-                        views: 0, imps: 0, date: firebase.firestore.FieldValue.serverTimestamp()
+                        views: 0, imps: 0, subGain: 0, date: firebase.firestore.FieldValue.serverTimestamp()
                     });
                 } else if(t === 'saveChan') {
-                    const newName = document.getElementById('cn').value;
-                    const newAva = document.getElementById('ca').value;
-                    const newBan = document.getElementById('cb').value;
-                    const newDesc = document.getElementById('cd').value;
-
-                    await db.collection("channels").doc(this.user.uid).update({
-                        name: newName, avatar: newAva, banner: newBan, desc: newDesc
-                    });
-
-                    // Массовое обновление данных во всех видео автора
+                    const data = { name: document.getElementById('cn').value, avatar: document.getElementById('ca').value, banner: document.getElementById('cb').value, desc: document.getElementById('cd').value };
+                    await db.collection("channels").doc(this.user.uid).update(data);
+                    // Batch update old videos
                     const vids = await db.collection("videos").where("uid", "==", this.user.uid).get();
-                    const batch = db.batch();
-                    vids.forEach(doc => {
-                        batch.update(doc.ref, { authorName: newName, authorPic: newAva });
-                    });
-                    await batch.commit();
+                    const b = db.batch();
+                    vids.forEach(d => b.update(d.ref, { authorName: data.name, authorPic: data.avatar }));
+                    await b.commit();
                 }
                 location.reload();
             },
 
-            async deleteVideo(id) { if(confirm("Удалить видео?")) { await db.collection("videos").doc(id).delete(); location.reload(); } },
-            closeModal() { document.getElementById('appModal').style.display = 'none'; },
-            async renderSideSubs() {
-                if(!this.channel.following || this.channel.following.length === 0) return;
-                const html = await Promise.all(this.channel.following.map(async id => {
-                    const d = await db.collection("channels").doc(id).get();
-                    return d.exists ? `<div class="nav-item" onclick="app.viewChannel('${id}')"><img src="${d.data().avatar}" class="avatar" style="width:24px; height:24px; margin-right:12px;"> ${d.data().name}</div>` : '';
-                }));
-                document.getElementById('sideSubs').innerHTML = html.join('');
-            },
             async viewChannel(uid) {
                 this.nav('channel');
                 const c = (await db.collection("channels").doc(uid).get()).data();
                 document.getElementById('chanHero').innerHTML = `
-                    <img src="${c.banner}" style="width:100%; height:200px; object-fit:cover; border-radius:20px;">
-                    <div style="display:flex; align-items:center; gap:20px; margin-top:20px;">
-                        <img src="${c.avatar}" style="width:80px; height:80px; border-radius:50%">
-                        <div><h2>${c.name}</h2><p style="color:gray">${c.subs?.length || 0} подписчиков</p></div>
+                    <div style="height:250px; background:url('${c.banner}') center/cover no-repeat; border-radius:24px;"></div>
+                    <div style="display:flex; align-items:center; gap:30px; margin-top:-40px; padding:0 30px;">
+                        <img src="${c.avatar}" style="width:120px; height:120px; border-radius:50%; border:6px solid var(--bg);">
+                        <div style="margin-top:40px;">
+                            <h1 style="font-size:32px; margin:0;">${c.name}</h1>
+                            <p style="color:var(--text-sec); font-weight:500;">${c.subs?.length || 0} подписчиков</p>
+                        </div>
                     </div>`;
                 this.renderGrid(this.allVideos.filter(v => v.uid === uid), 'chanGrid');
             },
+
+            async renderSideSubs() {
+                if(!this.channel.following) return;
+                const h = await Promise.all(this.channel.following.map(async id => {
+                    const d = await db.collection("channels").doc(id).get();
+                    return d.exists ? `<div class="nav-item" onclick="app.viewChannel('${id}')"><img src="${d.data().avatar}" class="avatar" style="width:28px; height:28px;"> ${d.data().name}</div>` : '';
+                }));
+                document.getElementById('sideSubs').innerHTML = h.join('');
+            },
+
+            timeAgo(ts) { if(!ts) return ''; const s = Math.floor((new Date()-ts.toDate())/1000); if(s<60)return'только что'; if(s<3600)return Math.floor(s/60)+' мин. назад'; if(s<86400)return Math.floor(s/3600)+' ч. назад'; return Math.floor(s/86400)+' дн. назад'; },
+            async deleteVideo(id) { if(confirm("Удалить?")) { await db.collection("videos").doc(id).delete(); location.reload(); } },
+            closeModal() { document.getElementById('appModal').style.display = 'none'; },
             viewProfile() { if(this.user) this.viewChannel(this.user.uid); else this.login(); },
-            search() {
-                const q = document.getElementById('searchInp').value.toLowerCase();
-                this.renderGrid(this.allVideos.filter(v => v.title.toLowerCase().includes(q)), 'mainGrid');
-            }
+            search() { const q=document.getElementById('searchInp').value.toLowerCase(); this.renderGrid(this.allVideos.filter(v=>v.title.toLowerCase().includes(q)),'mainGrid'); }
         };
         app.init();
     </script>
